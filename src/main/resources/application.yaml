@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-test-query: SELECT 1
+      minimum-idle: 1
+      maximum-pool-size: 10
+      pool-name: ${spring.application.name}-pool
+  application:
+    name: article
+  liquibase:
+    change-log: liquibase-changelog.yaml
+
+
+server:
+  port: 8080
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    username: user
+    password: 1111
+    url: jdbc:postgresql://localhost:5432/article
