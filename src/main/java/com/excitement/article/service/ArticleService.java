@@ -5,7 +5,7 @@ import com.excitement.article.contoller.dto.CreateArticleRequest;
 import com.excitement.article.contoller.dto.FindArticlesResponse;
 import com.excitement.article.exception.UserNotFoundException;
 import com.excitement.article.mapper.ArticleMapper;
-import com.excitement.article.repository.ArticleRepositoryService;
+import com.excitement.article.repository.ArticleRepository;
 import com.excitement.article.repository.ClientRepository;
 import com.excitement.article.repository.model.Article;
 import com.excitement.article.repository.model.Client;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ArticleService {
-    private final ArticleRepositoryService repositoryService;
+    private final ArticleRepository repositoryService;
     private final ClientRepository clientRepository;
     private final ArticleMapper mapper;
 

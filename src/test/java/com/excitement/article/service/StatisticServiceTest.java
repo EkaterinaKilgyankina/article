@@ -2,7 +2,7 @@ package com.excitement.article.service;
 
 import com.excitement.article.contoller.dto.ArticlesStatisticsData;
 import com.excitement.article.contoller.dto.ArticlesStatisticsResponse;
-import com.excitement.article.repository.ArticleRepositoryService;
+import com.excitement.article.repository.ArticleRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,14 +19,14 @@ class StatisticServiceTest {
     @InjectMocks
     StatisticService service;
     @Mock
-    ArticleRepositoryService articleRepositoryService;
+    ArticleRepository articleRepository;
 
     @Test
     void articlesStat() {
         ArticlesStatisticsData data = new ArticlesStatisticsData()
                 .setDate(LocalDate.now())
                 .setCount(12);
-        Mockito.when(articleRepositoryService.findStat())
+        Mockito.when(articleRepository.findStat())
                 .thenReturn(List.of(data));
 
         ArticlesStatisticsResponse result = service.articlesStat();

@@ -8,7 +8,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,10 +21,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @ActiveProfiles("test")
-@SpringBootTest
-class ArticleRepositoryServiceTest {
+@DataJdbcTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class ArticleRepositoryTest {
     @Autowired
-    ArticleRepositoryService repositoryService;
+    ArticleRepository articleRepository;
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -60,7 +62,7 @@ class ArticleRepositoryServiceTest {
                 .setAuthorId(11L)
                 .setPublishedAt(LocalDateTime.now());
 
-        Article result = repositoryService.save(article);
+        Article result = articleRepository.save(article);
 
         Assertions.assertThat(result)
                 .isNotNull()
@@ -78,7 +80,7 @@ class ArticleRepositoryServiceTest {
                 values (2, 12, 'title2', 'content2', now(), now());
                 """);
 
-        Page<Article> result = repositoryService.findAll(PageRequest.of(0, 1));
+        Page<Article> result = articleRepository.findAll(PageRequest.of(0, 1));
 
         Assertions.assertThat(result.getTotalElements())
                 .isEqualTo(2);
@@ -115,7 +117,7 @@ class ArticleRepositoryServiceTest {
                 values (9, 12, 'title9', 'content9', now(), '2020-10-17');
                 """);
 
-        List<ArticlesStatisticsData> result = repositoryService.findStat();
+        List<ArticlesStatisticsData> result = articleRepository.findStat();
 
         Assertions.assertThat(result)
                 .hasSize(7)

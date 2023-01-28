@@ -5,7 +5,7 @@ import com.excitement.article.contoller.dto.CreateArticleRequest;
 import com.excitement.article.contoller.dto.FindArticlesResponse;
 import com.excitement.article.exception.UserNotFoundException;
 import com.excitement.article.mapper.ArticleMapper;
-import com.excitement.article.repository.ArticleRepositoryService;
+import com.excitement.article.repository.ArticleRepository;
 import com.excitement.article.repository.ClientRepository;
 import com.excitement.article.repository.model.Article;
 import com.excitement.article.repository.model.Client;
@@ -24,14 +24,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
     @InjectMocks
     ArticleService service;
     @Mock
-    ArticleRepositoryService repositoryService;
+    ArticleRepository articleRepository;
     @Mock
     ClientRepository clientRepository;
     @Mock
@@ -64,7 +62,7 @@ class ArticleServiceTest {
                 ));
         Mockito.when(mapper.toModel(request, 123L, LocalDate.now()))
                 .thenReturn(article);
-        Mockito.when(repositoryService.save(article)).thenAnswer(e -> e.getArgument(0));
+        Mockito.when(articleRepository.save(article)).thenAnswer(e -> e.getArgument(0));
         Mockito.when(mapper.toDto(article)).thenReturn(articleDto);
 
         ArticleDto result = service.create(request, new User("userName", "pwd", List.of()));
@@ -79,7 +77,7 @@ class ArticleServiceTest {
                 .setTitle("title1");
         ArticleDto dto = new ArticleDto()
                 .setTitle("title2");
-        Mockito.when(repositoryService.findAll(PageRequest.of(1, 11)))
+        Mockito.when(articleRepository.findAll(PageRequest.of(1, 11)))
                 .thenReturn(
                         new PageImpl<>(List.of(article), PageRequest.of(1, 11), 10)
                 );
